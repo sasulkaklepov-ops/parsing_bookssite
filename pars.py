@@ -9,27 +9,20 @@ html=response.text
 
 soup=BeautifulSoup(html, "html.parser")
 
-jpg=soup.find("p", class_="price_color")
-all_price=soup.find_all("p", class_="price_color")
 
 wb=Workbook()
 ws=wb.active
-
-ws['A1']='Название книги'
-ws['B1']='Цена книги'
-
-url1=f"https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
-res=requests.get(url1)
-html1=res.text
-
-soup1=BeautifulSoup(html1, "html.parser")
-all_name_books=soup1.find("div", class_="col-sm-6 product_main")
-
-title=soup1.find("h1").text
-price=soup1.find("p", class_="price_color").text
-
-print(title, " : ", price)
-
-ws['A2']=title
-ws['B2']=price
-wb.save("book_price.xlsx")
+ws.title="Книги"
+ws["A1"]="Название книги"
+ws["B1"]="Цена книги"
+books=soup.find_all("article", class_="product_pod")
+a=2
+for book in books:
+    t=book.find('a', title=True)
+    title=t.get('title')
+    pr=book.find("p", class_="price_color").text
+    #print(title, ": ", pr)
+    ws[f"A{a}"]=title
+    ws[f"B{a}"]=pr
+    a+=1
+    wb.save("books.xlsx")
