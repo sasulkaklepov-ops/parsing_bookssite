@@ -21,7 +21,6 @@ for book in books:
     t=book.find('a', title=True)
     title=t.get('title')
     pr=book.find("p", class_="price_color").text
-    #print(title, ": ", pr)
     ws[f"A{a}"]=title
     ws[f"B{a}"]=pr
     a+=1
